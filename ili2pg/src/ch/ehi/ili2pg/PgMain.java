@@ -49,7 +49,9 @@ public class PgMain extends ch.ehi.ili2db.AbstractMain {
 				    * jdbc:postgresql://host/database
 				    * jdbc:postgresql://host:port/database
 				    */
-				if(config.getDbdatabase()!=null){
+				if(config.getDburl()!=null){
+					return config.getDburl();
+				} else if(config.getDbdatabase()!=null){
 					if(config.getDbhost()!=null){
 						if(config.getDbport()!=null){
 							return "jdbc:postgresql://"+config.getDbhost()+":"+config.getDbport()+"/"+config.getDbdatabase();
@@ -102,6 +104,7 @@ public class PgMain extends ch.ehi.ili2db.AbstractMain {
 		System.err.println("--dbdatabase database  The database name.");
 		System.err.println("--dbusr  username      User name to access database.");
 		System.err.println("--dbpwd  password      Password of user used to access database.");
+		System.err.println("--dburl  jdbcurl       JDBC connection url.");
 	}
 	@Override
 	protected void printSpecificOptions() {
@@ -113,6 +116,14 @@ public class PgMain extends ch.ehi.ili2db.AbstractMain {
 	protected int doArgs(String args[],int argi,Config config) throws ParseException
 	{
 		String arg=args[argi];
+		// Retrieves all set connection parameters from the environment.
+		// All variables are overwritten if they are specified on the command line.
+		// Mimic the standard behavior of libpq according to
+		// https://www.postgresql.org/docs/current/libpq-envars.html
+		String user = System.getenv("PGUSER");
+		config.setDbusr(user);
+		String password = System.getenv("PGPASSWORD");
+		config.setDbpwd(password);
 		if(arg.equals("--dbhost")){
 			argi++;
 			config.setDbhost(args[argi]);
@@ -132,6 +143,10 @@ public class PgMain extends ch.ehi.ili2db.AbstractMain {
 		}else if(arg.equals("--dbpwd")){
 			argi++;
 			config.setDbpwd(args[argi]);
+			argi++;
+		}else if(arg.equals("--dburl")){
+			argi++;
+			config.setDburl(args[argi]);
 			argi++;
 		}else if(arg.equals("--dbschema")){
 			argi++;

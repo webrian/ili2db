@@ -91,7 +91,7 @@ sourceSets {
     	srcDirs=['ili2pg/test/java']
     }
     
-    // compileClasspath — FileCollection
+    // compileClasspath ï¿½ FileCollection
     //   Default value: ${name}CompileClasspath configuration
     //   The classpath to use when compiling the source files of this source set.
     // The classpath used to compile this source.
@@ -102,7 +102,7 @@ sourceSets {
     compileClasspath += sourceSets.test.output
     compileClasspath += sourceSets.ili2pg.output
     
-    // runtimeClasspath — FileCollection
+    // runtimeClasspath ï¿½ FileCollection
     //   Default value: $output, ${name}RuntimeClasspath configuration
     //   The classpath to use when executing the classes of this source set.
     // The classpath used to execute this source.
@@ -397,7 +397,7 @@ task ili2pgJar(dependsOn: jar,type: Jar) {
       "Class-Path": 'libs/'+jar.archiveName+' '+configurations.ili2pgRuntimeClasspath.collect { 'libs/'+it.getName() }.join(' '))
   }   
 }
-task ili2pgBindist(dependsOn:[usrdoc,ili2pgJar], type: Zip){
+task ili2pgBindist(dependsOn:[ili2pgJar], type: Zip){
 	baseName = 'ili2pg'
 	destinationDir = file('dist')
 	from ili2pgJar
@@ -613,8 +613,8 @@ task ili2oraTest(type: Test) {
 task generateMyResources {
 	doLast {
 		def versionProps = new Properties()
-		versionProps.setProperty('version', "$project.version")
-		versionProps.setProperty('versionCommit', getGitHash())
+		versionProps.setProperty('version', "5.2.1-based")
+		versionProps.setProperty('versionCommit', "custom GEOGRID AG build")
 		def versionPropsFile = new File(generatedResources,"ch/ehi/ili2db/Version.properties")
 		versionPropsFile.getParentFile().mkdirs();
 		versionProps.store(versionPropsFile.newWriter(), null);

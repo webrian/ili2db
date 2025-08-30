@@ -30,3 +30,4 @@ jobs:
         with:
           name: ili2pg-5.2.1-SNAPSHOT.zip
           path: dist/ili2pg-5.2.1-SNAPSHOT.zip
+          if-no-files-found: error

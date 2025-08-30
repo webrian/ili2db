@@ -2,7 +2,7 @@ name: Build ili2pg
 on:
   push:
     branches:
-      - build_action
+      - geogrid_custom_5-2-1_build
   workflow_dispatch:
 
 jobs:

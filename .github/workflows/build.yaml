@@ -22,5 +22,11 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew compileJava ili2pgJar ili2pgBindist
 
-      - name: Search dirs
-        run: pwd && ls -R dist/
+      - name: List distribution directory
+        run: ls -R dist/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ili2pg-5.2.1-SNAPSHOT.zip
+          path: dist/ili2pg-5.2.1-SNAPSHOT.zip

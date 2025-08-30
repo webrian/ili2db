@@ -21,3 +21,6 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew compileJava ili2pgJar ili2pgBindist
+
+      - name: Search dirs
+        run: pwd && ls -R dist/

@@ -1,0 +1,23 @@
+name: Build ili2pg
+on:
+  push:
+    branches:
+      - build_action
+  workflow_dispatch:
+
+jobs:
+  publish-repo:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Build with Gradle
+        run: ./gradlew compileJava ili2pgJar ili2pgBindist

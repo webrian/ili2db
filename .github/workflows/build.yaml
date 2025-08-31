@@ -20,7 +20,7 @@ jobs:
           java-version: 11
 
       - name: Build with Gradle
-        run: ./gradlew compileJava ili2pgJar ili2pgBindist
+        run: ./gradlew compileJava ili2pgJar ili2pgBindist ili2gpkgJar ili2gpkgBindist
 
       - name: List distribution directory
         run: ls -R dist/
@@ -28,6 +28,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ili2pg-5.2.1-SNAPSHOT.zip
-          path: dist/ili2pg-5.2.1-SNAPSHOT.zip
+          name: ili2db-5.2.1-SNAPSHOT
+          path: dist/ili2*-5.2.1-SNAPSHOT.zip
           if-no-files-found: error

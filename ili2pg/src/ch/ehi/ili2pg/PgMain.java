@@ -120,6 +120,12 @@ public class PgMain extends ch.ehi.ili2db.AbstractMain {
 		// All variables are overwritten if they are specified on the command line.
 		// Mimic the standard behavior of libpq according to
 		// https://www.postgresql.org/docs/current/libpq-envars.html
+		String host = System.getenv("PGHOST");
+		config.setDbhost(host);
+		String port = System.getenv("PGPORT");
+		config.setDbport(port);
+		String database = System.getenv("PGDATABASE");
+		config.setDbdatabase(database);
 		String user = System.getenv("PGUSER");
 		config.setDbusr(user);
 		String password = System.getenv("PGPASSWORD");

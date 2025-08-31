@@ -438,7 +438,7 @@ task ili2gpkgJar(dependsOn: jar,type: Jar) {
       "Class-Path": 'libs/'+jar.archiveName+' '+configurations.ili2gpkgRuntimeClasspath.collect { 'libs/'+it.getName() }.join(' '))
   }   
 }
-task ili2gpkgBindist(dependsOn:[usrdoc,ili2gpkgJar], type: Zip){
+task ili2gpkgBindist(dependsOn:[ili2gpkgJar], type: Zip){
 	baseName = 'ili2gpkg'
 	destinationDir = file('dist')
 	from ili2gpkgJar

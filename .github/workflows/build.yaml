@@ -2,7 +2,7 @@ name: Build ili2pg
 on:
   push:
     branches:
-      - geogrid_custom_5-4-0_build
+      - add_sphinx_to_build
   workflow_dispatch:
 
 jobs:
@@ -12,6 +12,11 @@ jobs:
 
       - name: Checkout sources
         uses: actions/checkout@v4
+
+      - name: Setup Sphinx
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-sphinx
 
       - name: Setup Java
         uses: actions/setup-java@v4

@@ -429,7 +429,7 @@ task ili2pgJar(dependsOn: jar,type: Jar) {
       "Class-Path": 'libs/'+jar.archiveName+' '+configurations.ili2pgRuntimeClasspath.collect { 'libs/'+it.getName() }.join(' '))
   }   
 }
-task ili2pgBindist(dependsOn:[ili2pgJar], type: Zip){
+task ili2pgBindist(dependsOn:[usrdoc,ili2pgJar], type: Zip){
 	baseName = 'ili2pg'
 	destinationDir = file('dist')
 	from ili2pgJar
@@ -470,7 +470,7 @@ task ili2gpkgJar(dependsOn: jar,type: Jar) {
       "Class-Path": 'libs/'+jar.archiveName+' '+configurations.ili2gpkgRuntimeClasspath.collect { 'libs/'+it.getName() }.join(' '))
   }   
 }
-task ili2gpkgBindist(dependsOn:[ili2gpkgJar], type: Zip){
+task ili2gpkgBindist(dependsOn:[usrdoc,ili2gpkgJar], type: Zip){
 	baseName = 'ili2gpkg'
 	destinationDir = file('dist')
 	from ili2gpkgJar

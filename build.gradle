@@ -90,7 +90,7 @@ sourceSets {
     	srcDirs=['ili2pg/test/java']
     }
     
-    // compileClasspath - FileCollection
+    // compileClasspath � FileCollection
     //   Default value: ${name}CompileClasspath configuration
     //   The classpath to use when compiling the source files of this source set.
     // The classpath used to compile this source.
@@ -101,7 +101,7 @@ sourceSets {
     compileClasspath += sourceSets.test.output
     compileClasspath += sourceSets.ili2pg.output
     
-    // runtimeClasspath - FileCollection
+    // runtimeClasspath � FileCollection
     //   Default value: $output, ${name}RuntimeClasspath configuration
     //   The classpath to use when executing the classes of this source set.
     // The classpath used to execute this source.

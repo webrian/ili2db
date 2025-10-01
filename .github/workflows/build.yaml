@@ -2,7 +2,7 @@ name: Build ili2pg
 on:
   push:
     branches:
-      - add_sphinx_to_build
+      - geogrid_custom_5-4-0_build
   workflow_dispatch:
 
 jobs:

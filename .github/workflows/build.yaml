@@ -1,0 +1,33 @@
+name: Build ili2pg
+on:
+  push:
+    branches:
+      - geogrid_custom_5-4-0_build
+  workflow_dispatch:
+
+jobs:
+  publish-repo:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 11
+
+      - name: Build with Gradle
+        run: ./gradlew compileJava ili2pgJar ili2pgBindist ili2gpkgJar ili2gpkgBindist
+
+      - name: List distribution directory
+        run: ls -R dist/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ili2db-5.4.0-SNAPSHOT
+          path: dist/ili2*-5.4.0-SNAPSHOT.zip
+          if-no-files-found: error

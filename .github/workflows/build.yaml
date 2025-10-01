@@ -13,6 +13,11 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v4
 
+      - name: Setup Sphinx
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-sphinx
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:

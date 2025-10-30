@@ -25,7 +25,7 @@ jobs:
           java-version: 8
 
       - name: Build with Gradle
-        run: ./gradlew compileJava ili2pgJar ili2pgBindist ili2gpkgJar ili2gpkgBindist
+        run: ./gradlew compileJava ili2pgJar ili2pgBindist ili2gpkgJar ili2gpkgBindist ili2duckdbJar ili2duckdbBindist
 
       - name: List distribution directory
         run: ls -R dist/

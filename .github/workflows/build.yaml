@@ -1,4 +1,5 @@
 name: Build ili2pg
+run-name: ${{ github.repository }} is built and deployed
 on:
   push:
     branches:

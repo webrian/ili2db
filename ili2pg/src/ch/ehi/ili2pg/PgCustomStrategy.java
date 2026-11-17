@@ -1,6 +1,7 @@
 package ch.ehi.ili2pg;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import ch.ehi.basics.logging.EhiLogger;
@@ -16,6 +17,35 @@ import ch.interlis.ili2c.metamodel.RoleDef;
 import ch.interlis.ili2c.metamodel.Viewable;
 
 public class PgCustomStrategy extends AbstractJdbcMapping {
+
+	/**
+	 * Command line options take precedence, then the libpq environment variables
+	 * PGUSER and PGPASSWORD (not read by the JDBC driver itself).
+	 * If still no user/password is set, the PostgreSQL JDBC driver falls back to
+	 * the OS user resp. to the password file (.pgpass, PGPASSFILE).
+	 */
+	@Override
+	public Connection connect(String url, String dbusr, String dbpwd,
+			Config config) throws SQLException {
+		java.util.Properties params=new java.util.Properties();
+		if(config.getDbProperties()!=null){
+			params.putAll(config.getDbProperties());
+		}
+		// precedence: --dbusr/--dbpwd, then --dbparams file, then environment
+		setProperty(params, "user", dbusr, "PGUSER");
+		setProperty(params, "password", dbpwd, "PGPASSWORD");
+		return DriverManager.getConnection(url, params);
+	}
+	private static void setProperty(java.util.Properties params, String key, String cmdlineValue, String envVar) {
+		if(cmdlineValue!=null && !cmdlineValue.isEmpty()){
+			params.setProperty(key, cmdlineValue);
+		}else if(!params.containsKey(key)){
+			String envValue=System.getenv(envVar);
+			if(envValue!=null && !envValue.isEmpty()){
+				params.setProperty(key, envValue);
+			}
+		}
+	}
 
 	@Override
 	public void fromIliInit(Config config) {

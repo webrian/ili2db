@@ -49,22 +49,43 @@ public class PgMain extends ch.ehi.ili2db.AbstractMain {
 				    * jdbc:postgresql://host/database
 				    * jdbc:postgresql://host:port/database
 				    */
-				if(config.getDbdatabase()!=null){
-					if(config.getDbhost()!=null){
-						if(config.getDbport()!=null){
-							return "jdbc:postgresql://"+config.getDbhost()+":"+config.getDbport()+"/"+config.getDbdatabase();
-						}
-						return "jdbc:postgresql://"+config.getDbhost()+"/"+config.getDbdatabase();
-					}else {
-					    if(config.getDbport()!=null) {
-                            return "jdbc:postgresql://localhost:"+config.getDbport()+"/"+config.getDbdatabase();
-					    }
-					}
-					return "jdbc:postgresql:"+config.getDbdatabase();
+				// Command line options take precedence; missing values are taken
+				// from the libpq environment variables PGHOST, PGPORT, PGDATABASE
+				// (the PostgreSQL JDBC driver does not read these itself).
+				// Defaults as in libpq: host localhost, port 5432 (driver default),
+				// database = user name.
+				String host=firstNonEmpty(config.getDbhost(),System.getenv("PGHOST"));
+				if(host==null || host.startsWith("/")){
+					// unix domain socket directories are not supported by the JDBC driver
+					host="localhost";
 				}
-				return null;
+				String port=firstNonEmpty(config.getDbport(),System.getenv("PGPORT"));
+				String database=firstNonEmpty(config.getDbdatabase(),System.getenv("PGDATABASE"));
+				if(database==null){
+					database=firstNonEmpty(config.getDbusr(),System.getenv("PGUSER"),System.getProperty("user.name"));
+				}
+				if(database==null){
+					return null;
+				}
+				StringBuilder url=new StringBuilder("jdbc:postgresql://");
+				url.append(host);
+				if(port!=null){
+					url.append(':').append(port);
+				}
+				url.append('/').append(database);
+				return url.toString();
 			}
 		};
+	}
+
+	/** returns the first value that is neither null nor empty, or null. */
+	static String firstNonEmpty(String... values) {
+		for(String value:values){
+			if(value!=null && !value.isEmpty()){
+				return value;
+			}
+		}
+		return null;
 	}
 
 	@Override

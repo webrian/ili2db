@@ -529,6 +529,7 @@ public class Ili2db {
 						conn = connect(url, dbusr, dbpwd, config, customMapping);
 					}
 					customMapping.postConnect(conn, config);
+					dbusr=resolveDbUser(dbusr, conn);
 				} catch (SQLException ex) {
 					throw new Ili2dbException("failed to get db connection", ex);
 				} catch (IOException e) {
@@ -1378,6 +1379,7 @@ public class Ili2db {
 	                    conn = connect(url, dbusr, dbpwd, config, customMapping);
 	                }
 	                customMapping.postConnect(conn, config);
+	                dbusr=resolveDbUser(dbusr, conn);
 	              logDBVersion(conn);
 	              
 	              if(!connectionFromExtern){
@@ -2844,6 +2846,24 @@ public class Ili2db {
                 }
             }
         }
+    }
+    /** If no db user was given explicitly (e.g. taken from PGUSER by the JDBC driver),
+     * returns the user name of the actual connection.
+     */
+    private static String resolveDbUser(String dbusr, Connection conn) {
+        if(dbusr!=null && !dbusr.isEmpty()) {
+            return dbusr;
+        }
+        try {
+            String connUser=conn.getMetaData().getUserName();
+            if(connUser!=null && !connUser.isEmpty()) {
+                EhiLogger.logState("dbusr <" + connUser + "> (from connection)");
+                return connUser;
+            }
+        } catch (SQLException e) {
+            EhiLogger.traceState("failed to get user name from connection: "+e.getMessage());
+        }
+        return dbusr;
     }
     private static Connection connect(String url, String dbusr, String dbpwd,
 			Config config, CustomMapping customMapping) throws SQLException, IOException {

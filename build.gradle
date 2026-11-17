@@ -681,8 +681,8 @@ task ili2oraTest(type: Test) {
 task generateMyResources {
 	doLast {
 		def versionProps = new Properties()
-		versionProps.setProperty('version', "$project.version")
-		versionProps.setProperty('versionCommit', getGitHash())
+		versionProps.setProperty('version', "5.5.2-based")
+		versionProps.setProperty('versionCommit', "custom GEOGRID AG build")
 		def versionPropsFile = new File(generatedResources,"ch/ehi/ili2db/Version.properties")
 		versionPropsFile.getParentFile().mkdirs();
 		versionProps.store(versionPropsFile.newWriter(), null);
